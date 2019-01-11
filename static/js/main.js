@@ -26,7 +26,8 @@ function Validate() {
     return false;
   }
 
-  if (!email.value.includes("@")) {
+  var emailRegex = /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*/
+  if (!emailRegex.test(email.value)) {
     email.style.border = "1px solid red";
     emailError.textContent = "Email jest niepoprawny";
     return false;
