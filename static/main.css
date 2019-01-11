@@ -109,6 +109,13 @@ footer {
   margin-bottom: 10px;
 }
 
+.password_strength {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 15px;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
 input[type=text],
 input[type=password],
 select,

@@ -3,12 +3,14 @@ var regpassword = document.getElementById("regpassword");
 var confirm_password = document.getElementById("confirm_password");
 var email = document.getElementById("email");
 
-var loginError = document.getElementById("login_error")
-var emailError = document.getElementById("email_error")
-var passwordError = document.getElementById("password_error")
-var conPassError = document.getElementById("confirm_password_error")
+var loginError = document.getElementById("login_error");
+var emailError = document.getElementById("email_error");
+var passwordError = document.getElementById("password_error");
+var conPassError = document.getElementById("confirm_password_error");
 
 var regsubmit = document.getElementById("regsubmit");
+
+var passStr = document.getElementById("password_strength");
 
 
 function Validate() {
@@ -81,7 +83,42 @@ function conPasswordVerify() {
   }
 }
 
+function checkPasswordStrength() {
+  var strength = 0;
+  if (regpassword.value.match(/[a-zA-Z0-9][a-zA-Z0-9]+/)) {
+    strength += 1
+  }
+  if (regpassword.value.match(/[~<>?]+/)) {
+    strength += 1
+  }
+  if (regpassword.value.match(/[!@$%^&*()]+/)) {
+    strength += 1
+  }
+  if (regpassword.value.length > 5) {
+    strength += 1
+  }
+  switch (strength) {
+    case 0:
+      passStr.textContent = ""
+      break
+    case 1:
+      passStr.textContent = "Siła hasła: SŁABE"
+      break
+    case 2:
+      passStr.textContent = "Siła hasła: ŚREDNIE"
+      break
+    case 3:
+      passStr.textContent = "Siła hasła: SILNE"
+      break
+    case 4:
+      passStr.textContent = "Siła hasła: BARDZO SILNE"
+      break
+  }
+}
+
+
 reglogin.addEventListener("blur", loginVerify);
 email.addEventListener("blur", emailVerify);
 regpassword.addEventListener("blur", passwordVerify);
 confirm_password.addEventListener("blur", conPasswordVerify);
+regpassword.addEventListener("keyup", checkPasswordStrength);
