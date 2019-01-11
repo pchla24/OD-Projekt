@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+
+body {
+  margin: 0px;
+  background: #ffffff;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 800;
+}
+
+#headContainer {
+  width: 90%;
+  margin: 0 auto;
+}
+
+header {
+  background: #3b6fbd;
+  position: fixed;
+  top: 0%;
+  width: 100%;
+  z-index: 10;
+}
+
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+#logo {
+  width: 18%;
+  float: left;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+nav {
+  float: right;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav li {
+  margin-top: 45px;
+  display: inline-block;
+  margin-left: 90px;
+  position: relative;
+  padding-bottom: 10px;
+
+}
+
+nav a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+nav a::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background-color: #ffffff;
+  position: absolute;
+  bottom: 0;
+  width: 0%;
+  transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+  width: 100%;
+}
+
+
+#content {
+  width: 100%;
+  position: relative;
+  margin: 1000px auto;
+  margin-bottom: 0px;
+  background: #f2f2f2;
+}
+
+
+
+footer {
+  width: 100%;
+  background-color: #3b6fbd;
+  padding: 40px 0px;
+  left: 0px;
+  bottom: 0px;
+}
+
+
+.stopka {
+  font-family: "Work Sans", sans-serif;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: center;
+}
+
+
+.reg_error {
+  color: red;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+input[type=text],
+input[type=password],
+select,
+textarea {
+  width: 50%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 5px;
+  resize: vertical
+}
+
+
+input[type=submit] {
+  background-color: #3b6fbd;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2%;
+  margin-left: 17%;
+}
+
+
+input[type=submit]:hover {
+  background-color: #4c82d3;
+}
+
+
+#regFormContainer {
+
+  background-color: #f2f2f2;
+  padding-left: 35%;
+  margin-top: 8%;
+  padding-top: 6%;
+  padding-bottom: 5%;
+}
+
+
+#loginFormContainer {
+
+  background-color: #f2f2f2;
+  padding-left: 35%;
+  margin-top: 8%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+
+#accountCreated {
+  margin-top: 10%;
+  padding-top: 10%;
+  padding-bottom: 12%;
+  text-align: center;
+}
+
+#createUserLoginButton {
+  background-color: #3b6fbd;
+  color: white;
+  padding: 22px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+#createUserLoginButton:hover {
+  background-color: #4c82d3;
+}
