@@ -102,16 +102,20 @@ function checkPasswordStrength() {
       passStr.textContent = ""
       break
     case 1:
-      passStr.textContent = "Siła hasła: SŁABE"
+      passStr.style.color = "#f44b42";
+      passStr.textContent = "Siła hasła: SŁABE";
       break
     case 2:
-      passStr.textContent = "Siła hasła: ŚREDNIE"
+      passStr.style.color = "#f47741";
+      passStr.textContent = "Siła hasła: ŚREDNIE";
       break
     case 3:
-      passStr.textContent = "Siła hasła: SILNE"
+      passStr.style.color = "#f4a341";
+      passStr.textContent = "Siła hasła: SILNE";
       break
     case 4:
-      passStr.textContent = "Siła hasła: BARDZO SILNE"
+      passStr.style.color = "#2d8e32";
+      passStr.textContent = "Siła hasła: BARDZO SILNE";
       break
   }
 }
