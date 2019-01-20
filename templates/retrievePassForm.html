@@ -20,19 +20,10 @@
       </nav>
     </div>
   </header>
-  <div id="regFormContainer">
-    <form method="POST" action="/signUp" onsubmit="return Validate()">
-
-      <label for="login">Nazwa użytkownika</label><br />
-      <input type="text" id="reglogin" name="login" placeholder="Nazwa użytkownika..."><br />
-      <div id="login_error" class="reg_error"></div>
-
-      <label for="email">Adres email</label><br />
-      <input type="text" id="email" name="email" placeholder="Adres email..."><br />
-      <div id="email_error" class="reg_error"></div>
-
-      <label for="password">Hasło</label><br />
-      <input type="password" id="regpassword" name="password" placeholder="Hasło..."><br />
+  <div id="loginFormContainer">
+    <form method="POST" action="/changeForgottenPass" onsubmit="return Validate()">
+      <label for="password">Nowe hasło</label><br />
+      <input type="password" id="regpassword" name="password" placeholder="Nowe hasło..."><br />
       <div id="password_error" class="reg_error"></div>
       <div id="password_strength" class="password_strength"></div>
 
@@ -40,8 +31,7 @@
       <input type="password" id="confirm_password" name="confirm_password" placeholder="Powtórz hasło..."><br />
       <div id="confirm_password_error" class="reg_error"></div>
 
-      <input type="submit" id="regsubmit" value="Zarejestruj się">
-
+      <input type="submit" value="Zatwierdź">
     </form>
   </div>
 
@@ -49,7 +39,7 @@
     <p class="stopka">Janusz Sawicki 11.01.2019</p>
   </footer>
 
-  <script type="text/javascript" src="../static/js/register.js"></script>
+  <script type="text/javascript" src="../static/js/passchange.js"></script>
 </body>
 
 </html>

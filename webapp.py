@@ -36,3 +36,45 @@ def login():
 @app.route('/register')
 def register():
     return render_template('register.html')
+
+"""
+@app.route('/signUp')
+def signUp():
+    return render_template('message.html', messageContent="Na podany adres została wysłana wiadomość zawierająca link aktywacyjny. Zalogowanie będzie możliwe dopiero po aktywowaniu konta.")
+"""
+"""
+@app.route('/userActivated')
+def userActivated():
+    return render_template('userActivated.html')
+"""
+"""
+@app.route('/activateAccount/<string:activation_token>')
+def activateAccount(activation_token):
+    return redirect('/userActivated')
+"""
+"""
+@app.route('/forgotPassSendEmail', methods=['POST'])
+def forgotPassSendEmail():
+    return render_template('message.html', messageContent="Na poday adres została wysłana wiadomość zawierająca link do zmiany hasła.")
+"""
+"""
+@app.route('/retrievePassword/<string:retrieve_token>')
+def retrievePassword(retrieve_token):
+    return render_template('retrievePassForm.html')
+"""
+"""
+@app.route('/changeForgottenPass', methods=['POST'])
+def changeForgottenPass():
+    return render_template('message.html', messageContent="Hasło zostało zmienione")
+"""
+"""
+@app.route('/changePasswordForm')
+def changePasswordForm():
+    return render_template('changePasswordForm.html')
+"""
+"""
+@app.route('/changePassword', methods=['POST'])
+def changePassword():
+    return render_template('loggedMessage.html', messageContent="Hasło zostało zmienione")
+"""
+

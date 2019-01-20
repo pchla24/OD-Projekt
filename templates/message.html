@@ -11,17 +11,17 @@
 <body>
   <header>
     <div id="headContainer">
-      <a href="userHome"><img src="../static/images/od.png" alt="logo" id="logo" /></a>
+      <a href="login"><img src="../static/images/od.png" alt="logo" id="logo" /></a>
       <nav>
         <ul>
-          <li><a href="logout">Wyloguj się</a></li>
+          <li><a href="login">Zaloguj się</a></li>
+          <li><a href="register">Zarejestruj się</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <div id="accountCreated">
-    <h2>Zalogowany jako: {{username}}</h2>
-    <a href="/changePasswordForm"><button type="button" id="createUserLoginButton">Zmień hasło</button></a>
+    <h2>{{messageContent}}</h2>
   </div>
 
   <footer>

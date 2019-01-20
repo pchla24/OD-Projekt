@@ -140,6 +140,7 @@ input[type=submit] {
   cursor: pointer;
   margin-top: 2%;
   margin-left: 17%;
+  margin-bottom: 30px;
 }
 
 
@@ -187,4 +188,16 @@ input[type=submit]:hover {
 
 #createUserLoginButton:hover {
   background-color: #4c82d3;
+}
+
+.forgotPassText {
+  margin-left: 15%;
+  text-decoration: none;
+  color: #65686d;
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+}
+
+.forgotPassText:hover {
+  text-decoration: underline;
 }
