@@ -20,6 +20,8 @@ import hashlib
 import binascii
 import re
 from flask_mail import Mail, Message
+import random
+import time
 
 app = Flask(__name__)
 
@@ -44,9 +46,11 @@ import model
 def login():
     return render_template('login.html')
 
+
 @app.route('/register')
 def register():
     return render_template('register.html')
+
 
 @app.route('/signUp', methods=['POST'])
 def signUp():
@@ -78,23 +82,57 @@ def signUp():
 
     activation_token = str(jwt.encode(activation_token_parts,app.config['SECRET_KEY']))[2:-1]
     activation_link = 'http://127.0.0.1:5000/activateAccount/' + activation_token
-    msg = "Link aktywacyjny: " + activation_link
+    msg = "Link aktywacyjny (ważny przez 5 minut): " + activation_link
 
     send_mail('Aktywacja konta', msg, _email)
 
     return render_template('message.html', messageContent="Na podany adres została wysłana wiadomość zawierająca link aktywacyjny. Zalogowanie będzie możliwe dopiero po aktywowaniu konta.")
 
-"""
+
 @app.route('/activateAccount/<string:activation_token>')
 def activateAccount(activation_token):
-    return redirect('/userActivated')
-"""
+    activation_token_parts = {}
+    try:
+      activation_token_parts = jwt.decode(activation_token, app.config['SECRET_KEY'])
+    except jwt.ExpiredSignatureError:
+      return render_template('message.html', messageContent="Termin ważności linku wygasł")
+    _username = activation_token_parts['username']
+    user_to_activate = model.Users.query.filter_by(username=_username).first()
+    user_to_activate.active = True
+    db.session.commit()
 
-"""
+    return redirect('/userActivated')
+
+
 @app.route('/userActivated')
 def userActivated():
     return render_template('userActivated.html')
-"""
+
+
+@app.route('/signIn', methods=['POST'])
+def signIn():
+    _username = request.form['login']
+    _password = request.form['password']
+
+    user_to_signin = model.Users.query.filter_by(username=_username).first()
+
+    delay = random.uniform(0,1)
+    time.sleep(delay)
+
+    if verify_password(user_to_signin.password, _password) and user_to_signin.active:
+      session['user'] = _username
+      return redirect('/userHome')
+
+    return render_template('message.html', messageContent="Niepoprawna nazwa użytkownika lub hasło lub konto nie zostało aktywowane")
+
+
+@app.route('/userHome')
+def userHome():
+    if session.get('user'):
+      username = session['user']
+      return render_template('userHome.html', username=username)
+    else:
+      return redirect('/')
 
 """
 @app.route('/forgotPassSendEmail', methods=['POST'])
@@ -121,6 +159,11 @@ def changePasswordForm():
 def changePassword():
     return render_template('loggedMessage.html', messageContent="Hasło zostało zmienione")
 """
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
 
 
 
