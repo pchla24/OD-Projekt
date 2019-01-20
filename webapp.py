@@ -5,6 +5,7 @@ from flask import Response
 from flask import render_template
 from flask import url_for
 from flask import jsonify
+from flask_sqlalchemy import SQLAlchemy
 import os
 from os import environ as env
 from os.path import expanduser
@@ -19,7 +20,13 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 app.config.from_pyfile('sec.cfg')
-app.config['SESSION_COOKIE_SECURE'] = True
+#app.config['SESSION_COOKIE_SECURE'] = True
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///od.db'
+db = SQLAlchemy(app)
+
+import model
+
 
 @app.route('/')
 @app.route('/login')
