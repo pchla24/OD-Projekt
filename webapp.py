@@ -134,21 +134,64 @@ def userHome():
     else:
       return redirect('/')
 
-"""
+
+@app.route('/forgotPassword')
+def forgotPassword():
+    return render_template('forgotPassForm.html')
+
+
 @app.route('/forgotPassSendEmail', methods=['POST'])
 def forgotPassSendEmail():
-    return render_template('message.html', messageContent="Na poday adres została wysłana wiadomość zawierająca link do zmiany hasła.")
-"""
-"""
+    _email = request.form['email']
+
+    if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", _email):
+      return render_template('message.html', messageContent="Podany adres email jest niepoprawny")
+
+    user_to_retrieve = model.Users.query.filter_by(email=_email).first()
+    if user_to_retrieve:
+      fgPass_token_parts = {
+        'email': _email,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
+      }
+
+      fgPass_token = str(jwt.encode(fgPass_token_parts,app.config['SECRET_KEY']))[2:-1]
+      fgPass_link = 'http://127.0.0.1:5000/retrievePassword/' + fgPass_token
+      msg = "Link do zmiany hasła (ważny przez 5 minut): " + fgPass_link
+
+      send_mail('Zmiana hasła', msg, _email)
+
+      return render_template('message.html', messageContent="Na poday adres została wysłana wiadomość zawierająca link do zmiany hasła.")
+
+    else:
+      return render_template('message.html', messageContent="Użytkownik o podanym adresie email nie istnieje")
+
+
 @app.route('/retrievePassword/<string:retrieve_token>')
 def retrievePassword(retrieve_token):
-    return render_template('retrievePassForm.html')
-"""
-"""
+    fgPass_token_parts = {}
+    try:
+      fgPass_token_parts = jwt.decode(retrieve_token, app.config['SECRET_KEY'])
+    except jwt.ExpiredSignatureError:
+      return render_template('message.html', messageContent="Termin ważności linku wygasł")
+
+    _email = fgPass_token_parts['email']
+
+    return render_template('retrievePassForm.html', email=_email)
+
+
 @app.route('/changeForgottenPass', methods=['POST'])
 def changeForgottenPass():
+    _password = request.form['password']
+    _email = request.form['email']
+
+    _hashedPassword = hash_password(_password)
+
+    user_to_retrieve = model.Users.query.filter_by(email=_email).first()
+    user_to_retrieve.password = _hashedPassword
+    db.session.commit()
+    
     return render_template('message.html', messageContent="Hasło zostało zmienione")
-"""
+
 
 @app.route('/changePasswordForm')
 def changePasswordForm():
