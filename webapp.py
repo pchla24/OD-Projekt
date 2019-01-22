@@ -149,16 +149,30 @@ def retrievePassword(retrieve_token):
 def changeForgottenPass():
     return render_template('message.html', messageContent="Hasło zostało zmienione")
 """
-"""
+
 @app.route('/changePasswordForm')
 def changePasswordForm():
     return render_template('changePasswordForm.html')
-"""
-"""
+
+
 @app.route('/changePassword', methods=['POST'])
 def changePassword():
-    return render_template('loggedMessage.html', messageContent="Hasło zostało zmienione")
-"""
+    _oldPassword = request.form['oldPassword']
+    _newPassword = request.form['password']
+    _username = session['user']
+
+    user = model.Users.query.filter_by(username=_username).first()
+
+    if verify_password(user.password, _oldPassword):
+      _hashedNewPassword = hash_password(_newPassword)
+      user.password = _hashedNewPassword
+      db.session.commit()
+  
+      return render_template('loggedMessage.html', messageContent="Hasło zostało zmienione")
+
+    else:
+      return render_template('loggedMessage.html', messageContent="Hasło nie zostało zmienione z powodu podania niepoprawnego aktualnego hasła")
+
 
 @app.route('/logout')
 def logout():
