@@ -7,15 +7,9 @@ from flask import url_for
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 import os
-from os import environ as env
-from os.path import expanduser
 from flask import redirect
 import jwt
-import uuid
 import datetime
-from functools import wraps
-# from six.moves.urllib.parse import urlencode
-from werkzeug.utils import secure_filename
 import hashlib
 import binascii
 import re
