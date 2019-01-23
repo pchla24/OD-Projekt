@@ -60,6 +60,8 @@ def signUp():
 
     _hashedPassword = hash_password(_password)
 
+    delay()
+
     username_taken = model.Users.query.filter_by(username=_username).first()
     if username_taken:
       return render_template('message.html', messageContent="Nazwa użytkownika jest już zajęta")
@@ -116,12 +118,12 @@ def signIn():
 
     user_to_signin = model.Users.query.filter_by(username=_username).first()
 
-    delay = random.uniform(0,1)
-    time.sleep(delay)
+    delay()
 
-    if verify_password(user_to_signin.password, _password) and user_to_signin.active:
-      session['user'] = _username
-      return redirect('/userHome')
+    if user_to_signin:
+      if verify_password(user_to_signin.password, _password) and user_to_signin.active:
+        session['user'] = _username
+        return redirect('/userHome')
 
     return render_template('message.html', messageContent="Niepoprawna nazwa użytkownika lub hasło lub konto nie zostało aktywowane")
 
@@ -186,11 +188,15 @@ def changeForgottenPass():
 
     _hashedPassword = hash_password(_password)
 
+    delay()
+
     user_to_retrieve = model.Users.query.filter_by(email=_email).first()
-    user_to_retrieve.password = _hashedPassword
-    db.session.commit()
-    
-    return render_template('message.html', messageContent="Hasło zostało zmienione")
+    if user_to_retrieve:
+      user_to_retrieve.password = _hashedPassword
+      db.session.commit()
+      return render_template('message.html', messageContent="Hasło zostało zmienione")
+    else:
+      return render_template('message.html', messageContent="Błąd - parametr email został zmieniony, użytkownik o podanym adresie email nie istnieje")
 
 
 @app.route('/changePasswordForm')
@@ -208,6 +214,9 @@ def changePassword():
 
     if verify_password(user.password, _oldPassword):
       _hashedNewPassword = hash_password(_newPassword)
+
+      delay()
+
       user.password = _hashedNewPassword
       db.session.commit()
   
@@ -223,13 +232,13 @@ def logout():
     return redirect('/')
 
 
-
 def hash_password(password):
     salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
     pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), 
                                 salt, 100000)
     pwdhash = binascii.hexlify(pwdhash)
     return (salt + pwdhash).decode('ascii')
+
 
 def verify_password(stored_password, provided_password):
     salt = stored_password[:64]
@@ -241,7 +250,13 @@ def verify_password(stored_password, provided_password):
     pwdhash = binascii.hexlify(pwdhash).decode('ascii')
     return pwdhash == stored_password
 
+
 def send_mail(title, message, receiver):
     msg = Message(title, sender='ochronadanychjs@gmail.com', recipients=[receiver])
     msg.body = message
     mail.send(msg)
+
+
+def delay():
+    delayTime = random.uniform(0,1)
+    time.sleep(delayTime)
