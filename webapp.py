@@ -22,6 +22,7 @@ import re
 from flask_mail import Mail, Message
 import random
 import time
+import cgi
 
 app = Flask(__name__)
 
@@ -58,6 +59,12 @@ def signUp():
     _email = request.form['email']
     _password = request.form['password']
 
+    if not validateUsername(_username):
+      return render_template("message.html", messageContent="Podana nazwa użytkownika jest niewłaściwa. Nazwa może składać się z liter, cyfr oraz znaków kropki i podkreślnika.")
+    
+    if not validateEmail(_email):
+      return render_template('message.html', messageContent="Adres email jest niepoprawny")
+
     _hashedPassword = hash_password(_password)
 
     delay()
@@ -66,12 +73,9 @@ def signUp():
     if username_taken:
       return render_template('message.html', messageContent="Nazwa użytkownika jest już zajęta")
 
-    emial_taken = model.Users.query.filter_by(email = _email).first()
+    emial_taken = model.Users.query.filter_by(email=_email).first()
     if emial_taken:
       return render_template('message.html', messageContent="Adres email jest już w użyciu")
-
-    if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", _email):
-      return render_template('message.html', messageContent="Adres email jest niepoprawny")
 
     new_user = model.Users(username=_username, email=_email, password=_hashedPassword)
     db.session.add(new_user)
@@ -116,6 +120,9 @@ def signIn():
     _username = request.form['login']
     _password = request.form['password']
 
+    if not validateUsername(_username):
+      return render_template("message.html", messageContent="Niepoprawna nazwa użytkownika lub hasło lub konto nie zostało aktywowane")
+
     user_to_signin = model.Users.query.filter_by(username=_username).first()
 
     delay()
@@ -131,7 +138,7 @@ def signIn():
 @app.route('/userHome')
 def userHome():
     if session.get('user'):
-      username = session['user']
+      username = cgi.escape(session['user'])
       return render_template('userHome.html', username=username)
     else:
       return redirect('/')
@@ -146,7 +153,7 @@ def forgotPassword():
 def forgotPassSendEmail():
     _email = request.form['email']
 
-    if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", _email):
+    if not validateEmail(_email):
       return render_template('message.html', messageContent="Podany adres email jest niepoprawny")
 
     user_to_retrieve = model.Users.query.filter_by(email=_email).first()
@@ -178,13 +185,16 @@ def retrievePassword(retrieve_token):
 
     _email = fgPass_token_parts['email']
 
-    return render_template('retrievePassForm.html', email=_email)
+    return render_template('retrievePassForm.html', email=cgi.escape(_email))
 
 
 @app.route('/changeForgottenPass', methods=['POST'])
 def changeForgottenPass():
     _password = request.form['password']
     _email = request.form['email']
+
+    if not validateEmail(_email):
+      return render_template('message.html', messageContent="Błąd - parametr email został zmieniony, użytkownik o podanym adresie email nie istnieje")
 
     _hashedPassword = hash_password(_password)
 
@@ -260,3 +270,10 @@ def send_mail(title, message, receiver):
 def delay():
     delayTime = random.uniform(0,1)
     time.sleep(delayTime)
+
+
+def validateEmail(email):
+    return re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)
+
+def validateUsername(username):
+    return re.match(r"^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$", username)
