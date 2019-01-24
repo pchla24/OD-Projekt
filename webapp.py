@@ -178,14 +178,16 @@ def retrievePassword(retrieve_token):
       return render_template('message.html', messageContent="Termin ważności linku wygasł")
 
     _email = fgPass_token_parts['email']
+    session['email'] = _email
 
-    return render_template('retrievePassForm.html', email=cgi.escape(_email))
+    return render_template('retrievePassForm.html')
 
 
 @app.route('/changeForgottenPass', methods=['POST'])
 def changeForgottenPass():
     _password = request.form['password']
-    _email = request.form['email']
+    _email = session['email']
+    session.pop('email', None)
 
     if not validateEmail(_email):
       return render_template('message.html', messageContent="Błąd - parametr email został zmieniony, użytkownik o podanym adresie email nie istnieje")
