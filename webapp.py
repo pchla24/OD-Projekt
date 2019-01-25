@@ -151,7 +151,7 @@ def forgotPassSendEmail():
       return render_template('message.html', messageContent="Podany adres email jest niepoprawny")
 
     user_to_retrieve = model.Users.query.filter_by(email=_email).first()
-    if user_to_retrieve:
+    if user_to_retrieve and user_to_retrieve.active == True:
       fgPass_token_parts = {
         'email': _email,
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
