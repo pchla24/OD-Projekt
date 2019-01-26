@@ -6,7 +6,10 @@ Do uruchomienia aplikacji wymagane jest posiadanie następujących bibliotek:
 * JSON Web Token implementation in Python (pip install pyjwt)
 * Flask Mail (pip install Flask-Mail)
 
-## Sposób uruchomienia
+## Sposób uruchomienia (Windows)
+1. Przejście do głównego katalogu projektu
+2. Ustawienie zmiennej środowiskowej - set FLASK_APP=webapp.py
+3. Uruchomienie - flask run
 
 ## Opis aplikacji
 Opis aplikacji znajduje się w załączonym sprawozdaniu.
